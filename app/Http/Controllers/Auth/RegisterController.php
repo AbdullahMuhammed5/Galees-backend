@@ -49,9 +49,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'name' => ['required', 'string', 'max:255'],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -63,36 +63,38 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // $edate=strtotime($data['birthdate']); 
+        // $edate=date("Y-m-d",$edate);
         // return User::create([
-        //     'fName' => $data['firstName'],
-        //     'lName' => $data['lastName'],
-        //     'name' => $data['name'],
+        //     'fName' => $data['fname'],
+        //     'lName' => $data['lname'],
+        //     'name' => $data['fname'].'_'.$data['lname'],
         //     'email' => $data['email'],
         //     'password' => Hash::make($data['password']),
-        //     'address' => $data['address'],
+        //     'address' => $data['location'],
         //     'phone' => $data['phone'],
-        //     'birthdate' => $data['birthdate'],
+        //     'birthdate' => $edate,
         //     'gender' => $data['gender'],
         //     'career' => $data['career'],
         //     'imgID' => $data['imgID'],
         //     'imgPolice' => $data['imgPolice'],
-        //     'personalPic' => $data['personalPic'],
+        //     'personalPic' => $data['imgPersonal'],
         // ]);
 
-        return User::create([
-            'fName' => '',
-            'lName' => '',
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'address' => '',
-            'phone' => '',
-            'birthdate' => '',
-            'gender' => '',
-            'career' => '',
-            'imgID' => '',
-            'imgPolice' => '',
-            'personalPic' => ''
-        ]);
+        // return User::create([
+        //     'fName' => '',
+        //     'lName' => '',
+        //     'name' => $data['firstName'].' '.$data['lastName'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        //     'address' => '',
+        //     'phone' => '',
+        //     'birthdate' => '',
+        //     'gender' => '',
+        //     'career' => '',
+        //     'imgID' => '',
+        //     'imgPolice' => '',
+        //     'personalPic' => ''
+        // ]);
     }
 }

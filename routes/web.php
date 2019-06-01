@@ -30,3 +30,12 @@ Route::get('/auth', function () {
     }
     return Auth::user();
 });
+
+// Route::group(['middleware' => ['web']], function() {
+// // Route::post('/api/register', 'UserController@store');
+// // Route::post('/api/register', 'UserController@store')->middleware('auth:web');
+// Route::post('/api/register', 'Auth\RegisterController@register');
+// Route::post('/api/login', 'Auth\LoginController@login');
+// // Route::post('/api/register', 'register')->middleware('auth:web');
+// });
+
