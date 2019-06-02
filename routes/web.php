@@ -31,6 +31,17 @@ Route::get('/auth', function () {
     return Auth::user();
 });
 
+Route::get('/get-profile-card', function(){
+    $users = DB::table('users')
+        ->join('profiles', 'users.id', '=', 'profiles.user_id')
+        ->select('users.name', 'users.address', 'users.career',
+        'profiles.hourlyRate', 'profiles.reviewRate')
+        ->get();
+    // echo '<pre>'; print_r($users); echo '</pre>';
+    // var_dump($users);
+    return $users;
+});
+
 // Route::group(['middleware' => ['web']], function() {
 // // Route::post('/api/register', 'UserController@store');
 // // Route::post('/api/register', 'UserController@store')->middleware('auth:web');

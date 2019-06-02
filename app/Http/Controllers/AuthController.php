@@ -43,7 +43,7 @@ class AuthController extends Controller
 
     public function register(SignUpAsSitter $request)
     {
-        $edate=strtotime($request['birthdate']); 
+        $edate=strtotime($request['birthdate']);
         $edate=date("Y-m-d",$edate);
         $user = User::create([
             'fName' => $request['fname'],
@@ -111,6 +111,7 @@ class AuthController extends Controller
             'expires_in' => $this->guard()->factory()->getTTL() * 60 * 60,
             'user' => auth()->user()->name
         ]);
+        
     }
 
     /**
