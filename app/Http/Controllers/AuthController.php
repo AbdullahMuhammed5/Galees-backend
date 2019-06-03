@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\SignUpAsSitter;
 use App\User;
+use App\Profile;
 use JWTAuth;
 use JWTFactory;
 
@@ -51,6 +52,7 @@ class AuthController extends Controller
             'name' => $request['fname'].' '.$request['lname'],
             'email' => $request['email'],
             'password' => $request['password'],
+            'role' => 1,
             'address' => $request['location'],
             'phone' => $request['phone'],
             'birthdate' => $edate,
@@ -60,7 +62,15 @@ class AuthController extends Controller
             'imgPolice' => $request['imgPolice'],
             'personalPic' => $request['imgPersonal'],
         ]);
-        return $this->login($user);
+
+        $newProfile = Profile::create([
+            'hourlyRate' => 20,
+            'bio' => 'Write Some info About yourself',
+            'reviewRate' => 5,
+            'user_id' => $user->id
+        ]);
+
+        return $this->login($user->id);
 
     }
 
