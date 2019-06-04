@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\SignUpAsSitter;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Profile;
 use JWTAuth;
@@ -42,10 +43,21 @@ class AuthController extends Controller
         return response()->json(['error' => 'Email or Psassword doesn\'t exist'  ], 401);
     }
 
+    public function convertToImg($image, $type, $username){
+        preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
+        $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
+        $image = str_replace(' ', '+', $image);
+        $imageName = $username . '_' .  $type . '_' . date('d-m-Y', time()). '.' . $image_extension[1]; //generating unique file name;
+        Storage::disk('public')->put($imageName,base64_decode($image));
+        return $imageName;
+    }
+
     public function register(SignUpAsSitter $request)
     {
         $edate=strtotime($request['birthdate']); 
         $edate=date("Y-m-d",$edate);
+        $userNameForImg = $request['fname'].'_'.$request['lname'];
+
         $user = User::create([
             'fName' => $request['fname'],
             'lName' => $request['lname'],
@@ -58,9 +70,9 @@ class AuthController extends Controller
             'birthdate' => $edate,
             'gender' => $request['gender'],
             'career' => $request['career'],
-            'imgID' => $request['imgID'],
-            'imgPolice' => $request['imgPolice'],
-            'personalPic' => $request['imgPersonal'],
+            'imgID' => $this->convertToImg($request['imgID'], 'SSN', $userNameForImg),
+            'imgPolice' => $this->convertToImg($request['imgPolice'], 'imgPolice', $userNameForImg),
+            'personalPic' => $this->convertToImg($request['imgPersonal'], 'profilePic', $userNameForImg),
         ]);
 
         $newProfile = Profile::create([
@@ -70,8 +82,7 @@ class AuthController extends Controller
             'user_id' => $user->id
         ]);
 
-        return $this->login($user->id);
-
+        return 'Data Stored Successfully';
     }
 
     /**
