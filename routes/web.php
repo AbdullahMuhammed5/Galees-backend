@@ -22,7 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/get-profile-card', function(){
     $users = DB::table('users')
         ->join('profiles', 'users.id', '=', 'profiles.user_id')
-        ->select('users.name', 'users.address', 'users.career',
+        ->select('users.name', 'users.address', 'users.career', 'users.personalPic',
         'profiles.hourlyRate', 'profiles.reviewRate')
         ->get();
     return $users;
