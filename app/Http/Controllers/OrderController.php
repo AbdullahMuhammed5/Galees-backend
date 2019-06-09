@@ -43,8 +43,8 @@ class OrderController extends Controller
         return Order::create([
             'sitter_id' => 1,
             'customer_id' => 2,
-            'from' => $edate,
-            'to' => $edate2,
+            'from' => $from,
+            'to' => $to,
             'hoursPerDay' => $request['hours'],
             'phone' => $request['phone'],
             'address' => $request['city'],
