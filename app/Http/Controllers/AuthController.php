@@ -23,7 +23,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'ClientRegister']]);
     }
 
     /**
@@ -85,6 +85,29 @@ class AuthController extends Controller
             'user_id' => $user->id
         ]);
 
+        return 'Data Stored Successfully';
+    }
+
+    public function ClientRegister(SignUpAsSitter $request)
+    {
+        $edate=strtotime($request['birthdate']); 
+        $edate=date("Y-m-d",$edate);
+        $userNameForImg = $request['fname'].'_'.$request['lname'];
+
+        $user = User::create([
+            'fName' => $request['fname'],
+            'lName' => $request['lname'],
+            'name' => $request['fname'].' '.$request['lname'],
+            'email' => $request['email'],
+            'password' => $request['password'],
+            'role' => $request['role'],
+            'address' => $request['location'],
+            'phone' => $request['phone'],
+            'birthdate' => $edate,
+            'gender' => $request['gender'],
+            'imgID' => $this->convertToImg($request['imgID'], 'SSN', $userNameForImg),
+        ]);
+        
         return 'Data Stored Successfully';
     }
 
