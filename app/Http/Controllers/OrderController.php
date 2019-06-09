@@ -35,15 +35,20 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $from=strtotime($request['from']);
+        $from=date("Y-m-d",$from);
+        $to=strtotime($request['to']);
+        $to=date("Y-m-d",$to);
+        
         return Order::create([
-            'sitter_id' => $request['sitter_id'],
-            'customer_id' => $request['client_id'],
-            'from' => $request['from'],
-            'to' => $request['to'],
+            'sitter_id' => 1,
+            'customer_id' => 2,
+            'from' => $edate,
+            'to' => $edate2,
             'hoursPerDay' => $request['hours'],
             'phone' => $request['phone'],
-            'address' => $request['address'],
-            'proposal' => $request['proposal'],
+            'address' => $request['city'],
+            'proposal' => $request['addition'],
         ]);
     }
 
