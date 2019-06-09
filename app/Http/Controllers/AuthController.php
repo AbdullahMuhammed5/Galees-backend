@@ -44,12 +44,15 @@ class AuthController extends Controller
     }
 
     public function convertToImg($image, $type, $username){
-        preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
-        $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
-        $image = str_replace(' ', '+', $image);
-        $imageName = $username . '_' .  $type . '_' . date('d-m-Y', time()). '.' . $image_extension[1]; //generating unique file name;
-        Storage::disk('public')->put($imageName,base64_decode($image));
-        return $imageName;
+        if($image){
+            preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
+            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
+            $image = str_replace(' ', '+', $image);
+            $imageName = $username . '_' .  $type . '_' . date('d-m-Y', time()). '.' . $image_extension[1]; //generating unique file name;
+
+            Storage::disk('public')->put($imageName,base64_decode($image));
+            return $imageName;
+        }
     }
 
     public function register(SignUpAsSitter $request)
