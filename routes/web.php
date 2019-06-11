@@ -31,4 +31,9 @@ Route::get('/auth', function () {
     return Auth::user();
 });
 
+Route::get('/current-user/{email}', function($email){
+    return App\User::where('email', $email)
+        ->join('profiles', 'users.id', '=', 'profiles.user_id')
+        ->select('users.*', 'profiles.*')->first();
+});
 
