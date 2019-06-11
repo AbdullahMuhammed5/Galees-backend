@@ -27,6 +27,11 @@ class OrderController extends Controller
         //
     }
 
+    // public function getOrders($id){
+    //     return App\Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
+    //                 ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
+    // }
+
     /**
      * Store a newly created resource in storage.
      *

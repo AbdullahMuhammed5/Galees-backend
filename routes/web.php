@@ -41,3 +41,10 @@ Route::get('/get-profile-card', function(){
 });
 
 Route::resource('orders', 'OrderController');
+
+Route::get('/get-orders-num/{id}', function($id){
+    return App\Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
+                    ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
+});
+
+// Route::get('/get-orders-num/{id}', 'OrderController@getOrders');
