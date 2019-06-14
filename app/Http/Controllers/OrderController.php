@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Order;
 
 class OrderController extends Controller
@@ -27,10 +28,10 @@ class OrderController extends Controller
         //
     }
 
-    // public function getOrders($id){
-    //     return App\Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
-    //                 ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
-    // }
+    public function getOrders($id){
+        return Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
+                    ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
+    }
 
     /**
      * Store a newly created resource in storage.

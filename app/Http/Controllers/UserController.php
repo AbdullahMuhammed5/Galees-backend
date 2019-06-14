@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\User;
 
 class UserController extends Controller
@@ -42,6 +43,15 @@ class UserController extends Controller
         // ]);
 
         echo "Helllllo";
+    }
+
+    public function getProfileCard(){
+        $users = DB::table('users')
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.name', 'users.address', 'users.career',
+            'profiles.hourlyRate', 'profiles.reviewRate')
+            ->get();
+        return $users;
     }
 
     /**
