@@ -17,6 +17,7 @@ class UserController extends Controller
     public function index()
     {
         //
+        return User::all();
     }
 
     /**
@@ -43,15 +44,6 @@ class UserController extends Controller
         // ]);
 
         echo "Helllllo";
-    }
-
-    public function getProfileCard(){
-        $users = DB::table('users')
-            ->join('profiles', 'users.id', '=', 'profiles.user_id')
-            ->select('users.name', 'users.address', 'users.career',
-            'profiles.hourlyRate', 'profiles.reviewRate')
-            ->get();
-        return $users;
     }
 
     /**
@@ -124,5 +116,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        return User::find($id)->delete();
     }
 }

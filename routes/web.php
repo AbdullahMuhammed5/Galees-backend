@@ -20,7 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('orders', 'OrderController');
-
-Route::get('/get-profile-card', 'UserController@getProfileCard');
-
-Route::get('/get-orders-num/{id}', 'OrderController@getOrders');
+Route::resource('users', 'UserController');

@@ -16,6 +16,7 @@ class OrderController extends Controller
     public function index()
     {
         //
+        return Order::all();
     }
 
     /**
@@ -26,11 +27,6 @@ class OrderController extends Controller
     public function create()
     {
         //
-    }
-
-    public function getOrders($id){
-        return Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
-                    ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
     }
 
     /**
@@ -101,6 +97,6 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        return Task::find($id)->delete();
+        return Order::find($id)->delete();
     }
 }
