@@ -19,16 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/get-profile-card', function(){
-    $users = DB::table('users')
-        ->join('profiles', 'users.id', '=', 'profiles.user_id')
-        ->select('users.name', 'users.address', 'users.career', 'users.personalPic', 'users.gender',
-        DB::raw("TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) as age"),
-        'profiles.hourlyRate', 'profiles.reviewRate', 'profiles.FAC', 
-        'profiles.smoker', 'profiles.children', 'profiles.car', 'profiles.reviews', 'profiles.experience')
-        ->get();
-    return $users;
-});
+Route::get('/get-profile-card', 'UserController@getProfileCard');
 
 Route::get('/get-img/{imgName}', function($imgName){
     $filePath = storage_path('app/public/'.$imgName);
