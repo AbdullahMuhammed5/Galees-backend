@@ -19,8 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/get-profile-card', 'UserController@getProfileCard');
-
 Route::get('/get-img/{imgName}', function($imgName){
     $filePath = storage_path('app/public/'.$imgName);
     if(!File::exists($filePath)){
@@ -35,4 +33,12 @@ Route::get('/get-img/{imgName}', function($imgName){
     return $response;
 });
 
+Route::resource('orders', 'OrderController');
+
+Route::get('/get-profile-card', 'UserController@getProfileCard');
+
 Route::get('/current-user/{email}', ['uses' => 'UserController@getCurrentUser']);
+
+Route::get('/get-profile-card', 'UserController@getProfileCard');
+
+Route::get('/get-orders-num/{id}', 'OrderController@getOrders');
