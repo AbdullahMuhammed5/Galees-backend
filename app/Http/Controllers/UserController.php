@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
@@ -69,6 +70,17 @@ class UserController extends Controller
             'personalPic' => $request['personalPic'],
         ]);
         // echo $request;
+    }
+
+    public function getProfileCard(){
+        $users = DB::table('users')
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.name', 'users.address', 'users.career', 'users.personalPic', 'users.gender',
+            DB::raw("TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) as age"),
+            'profiles.hourlyRate', 'profiles.reviewRate', 'profiles.FAC', 
+            'profiles.smoker', 'profiles.children', 'profiles.car', 'profiles.reviews', 'profiles.experience')
+            ->get();
+        return $users;
     }
 
     /**
