@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\User;
+use \App\User;
 
 class UserController extends Controller
 {
@@ -17,6 +17,7 @@ class UserController extends Controller
     public function index()
     {
         //
+        return \App\User::all();
     }
 
     /**
@@ -43,6 +44,17 @@ class UserController extends Controller
         // ]);
 
         echo "Helllllo";
+    }
+
+    public function getCurrentUser($email){
+        $currUser = User::where('email', $email)->first();
+        if($currUser->role == 1){ // case of sitter user
+            return User::where('email', $email) // sitter needs additional data from profiles table
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.*', 'profiles.*')->first();
+        } else if($currUser->role == 2){ // case of regular user (client)
+            return $currUser;
+        }
     }
 
     /**

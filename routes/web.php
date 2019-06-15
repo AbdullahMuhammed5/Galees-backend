@@ -35,9 +35,4 @@ Route::get('/get-img/{imgName}', function($imgName){
     return $response;
 });
 
-Route::get('/current-user/{email}', function($email){
-    return App\User::where('email', $email)
-        ->join('profiles', 'users.id', '=', 'profiles.user_id')
-        ->select('users.*', 'profiles.*')->first();
-});
-
+Route::get('/current-user/{email}', ['uses' => 'UserController@getCurrentUser']);
