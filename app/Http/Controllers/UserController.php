@@ -127,6 +127,22 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = User::find($id);
+        $user->update($request->all());
+    }
+
+    public function changePassword(Request $request, $id){
+        $user = User::find($id);
+        $user->password = bcrypt($request['password']);
+        $user->save();
+        return "Updated successfully";
+    }
+
+    public function changeEmail(Request $request, $id){
+        $user = User::find($id);
+        $user->email = $request['email'];
+        $user->save();
+        return "Updated successfully";
     }
 
     /**
@@ -138,5 +154,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        // \App\Profile::where('user_id', $id)->delete();
+        User::find($id)->delete();
+        return 'Deleted Successfully';
     }
 }
