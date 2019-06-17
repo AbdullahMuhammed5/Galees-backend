@@ -36,3 +36,14 @@ Route::get('/get-img/{imgName}', function($imgName){
 Route::resource('orders', 'OrderController');
 Route::resource('users', 'UserController');
 Route::resource('reviews', 'ReviewController');
+
+Route::get('/get-profile-card', 'UserController@getProfileCard');
+
+Route::get('/current-user/{email}', ['uses' => 'UserController@getCurrentUser']);
+
+Route::get('/get-orders-num/{id}', 'OrderController@getOrders');
+
+Route::put('/change-password/{id}', 'UserController@changePassword');
+
+Route::put('/change-email/{id}', 'UserController@changeEmail');
+
