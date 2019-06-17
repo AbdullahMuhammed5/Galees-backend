@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\SignUpAsSitter;
+use Illuminate\Support\Facades\Storage;
 use App\User;
+use App\Profile;
 use JWTAuth;
 use JWTFactory;
 
@@ -21,7 +23,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'ClientRegister']]);
     }
 
     /**
@@ -41,27 +43,72 @@ class AuthController extends Controller
         return response()->json(['error' => 'Email or Psassword doesn\'t exist'  ], 401);
     }
 
+    public function convertToImg($image, $type, $username){
+        if($image){
+            preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
+            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
+            $image = str_replace(' ', '+', $image);
+            $imageName = $username . '_' .  $type . '_' . date('d-m-Y', time()). '.' . $image_extension[1]; //generating unique file name;
+
+            Storage::disk('public')->put($imageName,base64_decode($image));
+            return $imageName;
+        }
+    }
+
     public function register(SignUpAsSitter $request)
     {
         $edate=strtotime($request['birthdate']);
         $edate=date("Y-m-d",$edate);
+        $userNameForImg = $request['fname'].'_'.$request['lname'];
+
         $user = User::create([
             'fName' => $request['fname'],
             'lName' => $request['lname'],
             'name' => $request['fname'].' '.$request['lname'],
             'email' => $request['email'],
             'password' => $request['password'],
+            'role' => 1,
             'address' => $request['location'],
             'phone' => $request['phone'],
             'birthdate' => $edate,
             'gender' => $request['gender'],
             'career' => $request['career'],
-            'imgID' => $request['imgID'],
-            'imgPolice' => $request['imgPolice'],
-            'personalPic' => $request['imgPersonal'],
+            'imgID' => $this->convertToImg($request['imgID'], 'SSN', $userNameForImg),
+            'imgPolice' => $this->convertToImg($request['imgPolice'], 'imgPolice', $userNameForImg),
+            'personalPic' => $this->convertToImg($request['imgPersonal'], 'profilePic', $userNameForImg),
         ]);
-        return $this->login($user);
 
+        $newProfile = Profile::create([
+            'hourlyRate' => 20,
+            'bio' => 'Write Some info About yourself',
+            'reviewRate' => 5,
+            'user_id' => $user->id
+        ]);
+
+        return 'Data Stored Successfully';
+    }
+
+    public function ClientRegister(SignUpAsSitter $request)
+    {
+        $edate=strtotime($request['birthdate']); 
+        $edate=date("Y-m-d",$edate);
+        $userNameForImg = $request['fname'].'_'.$request['lname'];
+
+        $user = User::create([
+            'fName' => $request['fname'],
+            'lName' => $request['lname'],
+            'name' => $request['fname'].' '.$request['lname'],
+            'email' => $request['email'],
+            'password' => $request['password'],
+            'role' => $request['role'],
+            'address' => $request['location'],
+            'phone' => $request['phone'],
+            'birthdate' => $edate,
+            'gender' => $request['gender'],
+            'imgID' => $this->convertToImg($request['imgID'], 'SSN', $userNameForImg),
+        ]);
+        
+        return 'Data Stored Successfully';
     }
 
     /**

@@ -18,4 +18,8 @@ class Order extends Model
         'address',
         'proposal',
     ];
+
+    public function sitterName(){
+        return $this->belongsTo('App\User');
+    }
 }

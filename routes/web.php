@@ -19,5 +19,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/get-img/{imgName}', function($imgName){
+    $filePath = storage_path('app/public/'.$imgName);
+    if(!File::exists($filePath)){
+        abort(404);
+    }
+    $file = File::get($filePath);
+    $type = File::mimeType($filePath);
+    
+    $response = Response::make($file, 200);
+    $response->header("Content-type", $type);
+
+    return $response;
+});
+
 Route::resource('orders', 'OrderController');
 Route::resource('users', 'UserController');
+Route::resource('reviews', 'ReviewController');

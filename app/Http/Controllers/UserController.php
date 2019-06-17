@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UserController extends Controller
@@ -46,6 +46,17 @@ class UserController extends Controller
         echo "Helllllo";
     }
 
+    public function getCurrentUser($email){
+        $currUser = User::where('email', $email)->first();
+        if($currUser->role == 1){ // case of sitter user
+            return User::where('email', $email) // sitter needs additional data from profiles table
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.*', 'profiles.*')->first();
+        } else if($currUser->role == 2){ // case of regular user (client)
+            return $currUser;
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -71,6 +82,17 @@ class UserController extends Controller
             'personalPic' => $request['personalPic'],
         ]);
         // echo $request;
+    }
+
+    public function getProfileCard(){
+        $users = DB::table('users')
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.name', 'users.address', 'users.career', 'users.personalPic', 'users.gender',
+            DB::raw("TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) as age"),
+            'profiles.hourlyRate', 'profiles.reviewRate', 'profiles.FAC', 
+            'profiles.smoker', 'profiles.children', 'profiles.car', 'profiles.reviews', 'profiles.experience')
+            ->get();
+        return $users;
     }
 
     /**
@@ -105,6 +127,22 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = User::find($id);
+        $user->update($request->all());
+    }
+
+    public function changePassword(Request $request, $id){
+        $user = User::find($id);
+        $user->password = bcrypt($request['password']);
+        $user->save();
+        return "Updated successfully";
+    }
+
+    public function changeEmail(Request $request, $id){
+        $user = User::find($id);
+        $user->email = $request['email'];
+        $user->save();
+        return "Updated successfully";
     }
 
     /**
@@ -116,6 +154,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        return User::find($id)->delete();
+        // \App\Profile::where('user_id', $id)->delete();
+        User::find($id)->delete();
+        return 'Deleted Successfully';
     }
 }

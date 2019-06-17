@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Order;
+use App\Review;
 
-class OrderController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class OrderController extends Controller
     public function index()
     {
         //
-        $orders = DB::select("SELECT 
-                (SELECT name from users where id = orders.sitter_id) as sitterName,
-                (SELECT name from users where id = orders.customer_id) as cusName,
-                orders.hoursPerDay, orders.from, orders.to from orders");
+        $reviews = DB::select("SELECT 
+                (SELECT name from users where id = reviews.reviewer) as reviewer,
+                (SELECT name from users where id = reviews.receiver) as receiver,
+                reviews.rate, reviews.review from reviews");
 
-        return $orders;
+        return $reviews;
     }
 
     /**
@@ -42,20 +42,12 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $from=strtotime($request['from']);
-        $from=date("Y-m-d",$from);
-        $to=strtotime($request['to']);
-        $to=date("Y-m-d",$to);
-        
-        return Order::create([
-            'sitter_id' => 1,
-            'customer_id' => 2,
-            'from' => $from,
-            'to' => $to,
-            'hoursPerDay' => $request['hours'],
-            'phone' => $request['phone'],
-            'address' => $request['city'],
-            'proposal' => $request['addition'],
+        //
+        return Review::create([
+            'rate'=>$request['rate'],
+            'review'=>$request['review'],
+            'reviewer'=>$request['reviewer'],
+            'receiver'=>$request['receiver']
         ]);
     }
 
@@ -68,7 +60,7 @@ class OrderController extends Controller
     public function show($id)
     {
         //
-        return Order::find($id);
+        return Review::where('receiver', $id)->get();
     }
 
     /**
@@ -102,6 +94,8 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        return Order::find($id)->delete();
+        //
+        Review::find($id)->delete();
+        return "deleted Successfully";
     }
 }
