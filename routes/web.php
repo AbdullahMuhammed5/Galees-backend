@@ -37,6 +37,8 @@ Route::resource('orders', 'OrderController');
 
 Route::resource('users', 'UserController');
 
+Route::resource('reviews', 'ReviewController');
+
 Route::get('/get-profile-card', 'UserController@getProfileCard');
 
 Route::get('/current-user/{email}', ['uses' => 'UserController@getCurrentUser']);
