@@ -34,6 +34,14 @@ class OrderController extends Controller
         //
     }
 
+    public function ordersHistory($id){
+        return Order::where('customer_id', $id)->get();
+    }
+
+    public function sittersOrderHistory($id){
+        return Order::where('sitter_id', $id)->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
