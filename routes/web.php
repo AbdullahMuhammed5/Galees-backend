@@ -47,3 +47,4 @@ Route::put('/change-password/{id}', 'UserController@changePassword');
 
 Route::put('/change-email/{id}', 'UserController@changeEmail');
 
+Route::get('/get-profile-data/{id}', 'UserController@getProfileData');

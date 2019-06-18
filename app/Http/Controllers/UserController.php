@@ -46,6 +46,13 @@ class UserController extends Controller
         echo "Helllllo";
     }
 
+    public function getProfileData($id){
+        return User::where('id', $id)
+            ->join('profiles', 'users.id', '=', 'profiles.user_id')
+            ->select('users.*', 'profiles.*', DB::raw("TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) as age"))
+            ->first();
+    }
+
     public function getCurrentUser($email){
         $currUser = User::where('email', $email)->first();
         if($currUser->role == 1){ // case of sitter user
@@ -87,7 +94,7 @@ class UserController extends Controller
     public function getProfileCard(){
         $users = DB::table('users')
             ->join('profiles', 'users.id', '=', 'profiles.user_id')
-            ->select('users.name', 'users.address', 'users.career', 'users.personalPic', 'users.gender',
+            ->select('users.name', 'users.address', 'users.career', 'users.personalPic', 'users.gender', 'users.id',
             DB::raw("TIMESTAMPDIFF(YEAR, users.birthdate, CURDATE()) as age"),
             'profiles.hourlyRate', 'profiles.reviewRate', 'profiles.FAC', 
             'profiles.smoker', 'profiles.children', 'profiles.car', 'profiles.reviews', 'profiles.experience')
