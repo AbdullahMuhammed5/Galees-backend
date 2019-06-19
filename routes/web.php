@@ -51,6 +51,9 @@ Route::get('/get-profile-data/{id}', 'UserController@getProfileData');
 
 Route::get('/get-received-reviews/{id}', 'ReviewController@getReviewsToProfile');
 
+Route::get('/get-received-reviews-regular/{id}', 'ReviewController@regularUserReviews');
+
 Route::get('/orders-history/{id}', 'OrderController@ordersHistory');
 
 Route::get('/sitter-orders-history/{id}', 'OrderController@sittersOrderHistory');
+

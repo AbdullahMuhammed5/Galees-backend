@@ -65,6 +65,13 @@ class ReviewController extends Controller
 
     public function getReviewsToProfile($id){
         return Review::where('receiver', $id)
+        ->join('users', 'users.id', '=', 'reviews.reviewer')
+        ->select('users.name', 'users.personalPic', 'reviews.rate', 'reviews.review')
+        ->get();
+    }
+
+    public function regularUserReviews($id){
+        return Review::where('reviewer', $id)
         ->join('users', 'users.id', '=', 'reviews.receiver')
         ->select('users.name', 'users.personalPic', 'reviews.rate', 'reviews.review')
         ->get();

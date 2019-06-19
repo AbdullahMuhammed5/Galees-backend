@@ -36,14 +36,14 @@ class OrderController extends Controller
 
     public function ordersHistory($id){
         return Order::where('customer_id', $id)
-            ->join("users", "users.id", "=", "customer_id")
+            ->join("users", "users.id", "=", "sitter_id")
             ->select('users.name', 'users.personalPic', 'orders.*')
             ->get();
     }
 
     public function sittersOrderHistory($id){
         return Order::where('sitter_id', $id)
-        ->join("users", "users.id", "=", "sitter_id")
+        ->join("users", "users.id", "=", "customer_id")
         ->select('users.name', 'users.personalPic', 'orders.*')->get();
     }
 
