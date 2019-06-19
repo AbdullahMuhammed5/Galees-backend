@@ -48,8 +48,8 @@ class OrderController extends Controller
         $to=date("Y-m-d",$to);
         
         return Order::create([
-            'sitter_id' => 1,
-            'customer_id' => 2,
+            'sitter_id' => $request['sitterID'],
+            'customer_id' => $request['customerID'],
             'from' => $from,
             'to' => $to,
             'hoursPerDay' => $request['hours'],
@@ -81,7 +81,10 @@ class OrderController extends Controller
     {
         //
     }
-
+    public function getOrders($id){
+        return Order::select(DB::raw('COUNT(`sitter_id`) AS orders_num'))
+                        ->where('sitter_id', $id)->groupBy('sitter_id')->first()->orders_num;
+    }
     /**
      * Update the specified resource in storage.
      *
