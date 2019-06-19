@@ -48,3 +48,9 @@ Route::put('/change-password/{id}', 'UserController@changePassword');
 Route::put('/change-email/{id}', 'UserController@changeEmail');
 
 Route::get('/get-profile-data/{id}', 'UserController@getProfileData');
+
+Route::get('/get-received-reviews/{id}', 'ReviewController@getReviewsToProfile');
+
+Route::get('/orders-history/{id}', 'OrderController@ordersHistory');
+
+Route::get('/sitter-orders-history/{id}', 'OrderController@sittersOrderHistory');

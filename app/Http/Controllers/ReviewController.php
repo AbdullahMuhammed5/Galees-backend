@@ -63,6 +63,13 @@ class ReviewController extends Controller
         return Review::where('receiver', $id)->get();
     }
 
+    public function getReviewsToProfile($id){
+        return Review::where('receiver', $id)
+        ->join('users', 'users.id', '=', 'reviews.receiver')
+        ->select('users.name', 'users.personalPic', 'reviews.rate', 'reviews.review')
+        ->get();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
