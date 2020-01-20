@@ -20,7 +20,7 @@ First, downlaod or clone our app from [back-end repository](https://github.com/A
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `php artisan serve` for a dev server. Navigate to `http://localhost:8000/`. The app will automatically reload if you change any of the source files.
 
 
 
